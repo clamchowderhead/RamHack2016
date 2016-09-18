@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+    function validateForm() {
+        var firstName = document.forms["myForm"]["fname"].value;
+        var lastName = document.forms["myForm"]["lname"].value;
+        var depositAmount = document.forms["myForm"]["dAmount"].value;
+        var videoLink = document.forms["myForm"]["vLink"].value;
+
+        if (firstName == null || firstName == "" || lastName == null || lastName == "" || depositAmount == null || depositAmount == "" || videoLink == null || videoLink == "") {
+            alert("Name must be filled out");
+            return false;
+        }
+
+}
+        </script>
+</head>
+<body>
+<form name="myForm" action="demo_form.asp" onsubmit="return validateForm()" method="post">
+First Name: <input type="text" name="fname">
+Last Name: <input type="text" name="lname">
+Deposit: <input type="text" name="dAmount">
+Video: <input type="text" name="vLink">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>

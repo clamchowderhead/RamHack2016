@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,9 @@
 </head>
 
 <body>
+   <iframe id="player" type="text/html" width="640" height="390"
+  src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+  frameborder="0"></iframe>
     <form action="">
         <div class="form-group">
             <label for="fname">First Name:</label>
@@ -23,7 +26,7 @@
             <input class="form-control" type="number" placeholder="Initial Deposit" id="deposit" />
             <label for="ytube">Youtube Link:</label>
             <input class="form-control" type="text" placeholder="Youtube Link" id="ytube" />
-            <button type="button" class="btn btn-primary" onClick="store()">Queue!</button>
+            <button type="button" class="btn btn-primary" onClick="setTimeout(store(),5000)">Queue!</button>
         </div>
     </form>
 
@@ -38,6 +41,7 @@
             cust = customer.initWithKey(apiKey);
           });
         });
+
         function store() {
             var fname = document.getElementById("fname").value;
             var lname = document.getElementById("lname").value;
@@ -46,9 +50,12 @@
             console.log(fname);
             if (valid(fname, lname, deposit, ytube))
                 createCustomer(fname, lname, deposit, ytube);
+            document.getElementById("player").setAttribute("src",ytube.replace("watch?v=","v/"));
 
         }
 
+
+        
         function valid(fname, lname, dep, ytube) {
             var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
             if (fname == "" || lname == "" || dep == "" || ytube == "") {
@@ -85,5 +92,49 @@
         console.log("[Customer - Create Customer] Response Code: " + responseCode);
         $('#postCustomer').html("Create Customer: Response Code <b>" + responseCode + "</b>")
       }
+
+      //Loads Iframe player
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);
+
+      //Function creates an <iframe>
+      var player;
+      function onYoutubeIframAPIReady() {
+        player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: 'M71c1UVf-VE',
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+       //Calls function when video is ready
+       //Starts countdown; 
+       function onPlayerReady(event) {
+        event.taret.playVideo()
+    }
+
+       //Calls function when player's state changes
+       var done = false;
+       function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 6000);
+            done = true;
+        }
+    }
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+        //Stops; increments in seconds
+
+
+
+
     </script>
 </body>
