@@ -25,9 +25,12 @@
 </div>
 
 <body>
+  <div class="embed-responsive embed-responsive-16by9">
    <iframe id="player" type="text/html" width="640" height="390" align="top"
   src="http://www.youtube.com/embed/J2gBkqP4V9Y?autoplay=1"
   frameborder="400"></iframe>
+</div>
+<div class="well">
     <form action="">
         <div class="form-group">
             <label for="fname">First Name:</label>
@@ -43,6 +46,7 @@
             <button type="button" class="btn btn-primary" onClick="store();onPlayerReady()">Queue!</button>
         </div>
     </form>
+  </div>
     <script type="text/javascript">
         var apiKey = "cff0adf9f932d90ee874d89661a73b36";
         var cust;
@@ -65,7 +69,7 @@
         function onYoutubeIframAPIReady() {
           player = new YT.Player('player', {
               height: '390',
-              width: '640', 
+              width: '640',
               align: 'top',
               videoId: 'dQw4w9WgXcQ',
               events: {
