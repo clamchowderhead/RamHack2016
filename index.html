@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +13,7 @@
 
 <body>
    <iframe id="player" type="text/html" width="640" height="390"
-  src="http://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1&origin=http://example.com"
+  src="http://www.youtube.com/embed/J2gBkqP4V9Y?autoplay=1"
   frameborder="0"></iframe>
     <form action="">
         <div class="form-group">
@@ -26,10 +27,9 @@
             <input class="form-control" type="number" placeholder="Initial Deposit" id="deposit" />
             <label for="ytube">Youtube Link:</label>
             <input class="form-control" type="text" placeholder="Youtube Link" id="ytube" />
-            <button type="button" class="btn btn-primary" onClick="store()">Queue!</button>
+            <button type="button" class="btn btn-primary" onClick="store();onPlayerReady()">Queue!</button>
         </div>
     </form>
-
     <script type="text/javascript">
         var apiKey = "cff0adf9f932d90ee874d89661a73b36";
         var cust;
@@ -41,7 +41,27 @@
             cust = customer.initWithKey(apiKey);
           });
         });
+        //Loads Iframe player
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);
 
+        //Function creates an <iframe>
+        var player;
+        function onYoutubeIframAPIReady() {
+          player = new YT.Player('player', {
+              height: '390',
+              width: '640',
+              videoId: 'dQw4w9WgXcQ',
+              events: {
+                  'onReady': onPlayerReady,
+                  'onStateChange': onPlayerStateChange
+              }
+          });
+      }
+        var creds;
+        var timer;
         function store() {
             var fname = document.getElementById("fname").value;
             var lname = document.getElementById("lname").value;
@@ -49,9 +69,21 @@
             var ytube = document.getElementById("ytube").value;
             if (valid(fname, lname, deposit, ytube))
                 createCustomer(fname, lname, deposit, ytube);
-            document.getElementById("player").setAttribute("src",ytube.replace("watch?v=","v/"));
+             document.getElementById("player").setAttribute("src",ytube.replace("watch?v=","v/").concat("?autoplay=1"));
+            creds=(document.getElementById("deposit").value)*100;
+            timer= setInterval(checkCreds,1000);
         }
 
+        function checkCreds(){
+          if(creds===0){
+            document.getElementById("player").setAttribute("src","http://www.youtube.com/embed/J2gBkqP4V9Y?autoplay=1");
+            clearInterval(timer);
+          }
+          else {
+              creds--;
+              console.log(creds);
+          }
+        }
         function valid(fname, lname, dep, ytube) {
             var nameRegEx=/^[a-zA-Z ]*$/;
             var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
@@ -62,7 +94,6 @@
                 return false;
             }
             if(!nameRegEx.test(fname) || !nameRegEx.test(lname) ){
-              console.log("test");
               ret=false;
               alert("Names must only contain letters!");
             }
@@ -86,24 +117,7 @@
         $('#postCustomer').html("Create Customer: Response Code <b>" + responseCode + "</b>")
       }
 
-      //Loads Iframe player
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);
-      //Function creates an <iframe>
-      var player;
-      function onYoutubeIframAPIReady() {
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: 'M71c1UVf-VE',
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
+
 
        //Calls function when video is ready
        //Starts countdown;
@@ -129,4 +143,5 @@
 
 
     </script>
+
 </body>
