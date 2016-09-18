@@ -11,10 +11,23 @@
     <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 </head>
 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-4">
+      <h1> <b> <p class="text-center">Streamline</b> </p> </h1>
+      <h5> <p class="text-center"> <em> A second for every cent</p> </h5>
+    </div>
+    <div class="col-sm-4">
+    </div>
+  </div>
+</div>
+
 <body>
-   <iframe id="player" type="text/html" width="640" height="390"
+   <iframe id="player" type="text/html" width="640" height="390" align="top"
   src="http://www.youtube.com/embed/J2gBkqP4V9Y?autoplay=1"
-  frameborder="0"></iframe>
+  frameborder="400"></iframe>
     <form action="">
         <div class="form-group">
             <label for="fname">First Name:</label>
@@ -52,7 +65,8 @@
         function onYoutubeIframAPIReady() {
           player = new YT.Player('player', {
               height: '390',
-              width: '640',
+              width: '640', 
+              align: 'top',
               videoId: 'dQw4w9WgXcQ',
               events: {
                   'onReady': onPlayerReady,
